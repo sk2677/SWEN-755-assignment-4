@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>Student Information</title>
+
+</head>
+<body>
+<script>
+      let inactivityTime = function() {
+        let time;
+        window.onload = resetTimer;
+        document.onmousemove = resetTimer;
+        document.onkeypress = resetTimer;
+        function logout() {
+          alert("You will logout in 10 seconds. please click to continue.")
+        }
+        function resetTimer() {
+          clearTimeout(time);
+          time = setTimeout(logout, 5000)
+        }
+      };
+      window.onload = function() {
+        inactivityTime();
+      }
+    </script>
+	<div align="center">
+		<h1>Student List</h1>
+		
+		<div sec:authorize="isAuthenticated()">
+			Welcome <b><span sec:authentication="name">Username</span></b> &nbsp;
+			<i><span sec:authentication="principal.authorities">Roles</span></i>
+		</div>
+		
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Logout" />
+		</form>
+		
+		<div sec:authorize="hasAnyAuthority('CREATE')">
+		<a href="/new">Add Student</a>
+		</div>
+
+		<div sec:authorize="hasAnyAuthority('ADMIN')">
+			<a href="/register">Register User</a>
+		</div>
+		
+		<table border="1" cellpadding="10">
+			<thead>
+				<tr>
+					<th>Student ID</th>
+					<th>Student Name</th>
+					<th>Student City</th>
+					<th sec:authorize="hasAnyAuthority('ADMIN', 'EDIT')">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="student : ${listStudent}">
+					<td th:text="${student.id}">Student ID</td>
+					<td th:text="${student.name}">Student Name</td>
+					<td th:text="${student.city}">Student City</td>
+
+					<td sec:authorize="hasAnyAuthority('ADMIN', 'EDIT')">
+						<div sec:authorize="hasAnyAuthority('ADMIN', 'EDIT')">
+							<a th:href="@{'/edit/' + ${student.id}}">Edit</a>
+						</div> &nbsp;&nbsp;&nbsp;
+						<div sec:authorize="hasAnyAuthority('ADMIN')">
+							<a th:href="@{'/delete/' + ${student.id}}">Delete</a>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
