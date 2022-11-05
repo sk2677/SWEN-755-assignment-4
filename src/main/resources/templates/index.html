@@ -24,6 +24,12 @@
       window.onload = function() {
         inactivityTime();
       }
+
+      window.onunload = function () {
+      alert("called")
+      xhttp.open("POST", "/logout");
+  		xhttp.send();
+	}
     </script>
 	<div align="center">
 		<h1>Student List</h1>
@@ -49,24 +55,46 @@
 			<thead>
 				<tr>
 					<th>Student ID</th>
-					<th>Student Name</th>
-					<th>Student City</th>
+					<th>Name</th>
+
+					<th sec:authorize="hasAnyAuthority('READ', 'EDIT')">City</th>
+					<th sec:authorize="hasAnyAuthority('ADMIN')">Role</th>
+
+
 					<th sec:authorize="hasAnyAuthority('ADMIN', 'EDIT')">Action</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="student : ${listStudent}">
-					<td th:text="${student.id}">Student ID</td>
-					<td th:text="${student.name}">Student Name</td>
-					<td th:text="${student.city}">Student City</td>
+			<tr sec:authorize="hasAnyAuthority('READ')" th:each="student : ${listStudent}">
 
-					<td sec:authorize="hasAnyAuthority('ADMIN', 'EDIT')">
-						<div sec:authorize="hasAnyAuthority('ADMIN', 'EDIT')">
-							<a th:href="@{'/edit/' + ${student.id}}">Edit</a>
-						</div> &nbsp;&nbsp;&nbsp;
-						<div sec:authorize="hasAnyAuthority('ADMIN')">
-							<a th:href="@{'/delete/' + ${student.id}}">Delete</a>
+				<td th:text="${student.studentId}">Student ID</td>
+				<td th:text="${student.name}">Student Name</td>
+				<td th:text="${student.city}">Student City</td>
+			</tr>
+				<tr sec:authorize="hasAnyAuthority('EDIT')" th:each="student : ${listStudent}">
+
+							<td th:text="${student.studentId}">Student ID</td>
+							<td th:text="${student.name}">Student Name</td>
+							<td th:text="${student.city}">Student City</td>
+					<td>
+						<div>
+							<a th:href="@{'/edit/' + ${student.studentId}}">Edit</a>
 						</div>
+					</td>
+				</tr>
+
+				<tr sec:authorize="hasAnyAuthority('ADMIN')" th:each="user : ${userList}">
+				<td th:text="${user.id}">User ID</td>
+				<td th:text="${user.username}">User Name</td>
+				<td  th:text="${user.roles[0].name}"></td>
+
+					<td>
+						<div>
+							<a th:href="@{'/editUser/' + ${user.id}}">Edit</a>
+						</div>&nbsp;&nbsp;&nbsp;
+<!--						<div>-->
+<!--							<a th:href="@{'/delete/' + ${user.id}}">Delete</a>-->
+<!--						</div>-->
 					</td>
 				</tr>
 			</tbody>

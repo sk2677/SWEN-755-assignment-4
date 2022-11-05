@@ -1,5 +1,8 @@
 package edu.rit.assignment4.bean;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +22,7 @@ public class User {
     private boolean credentialsNonExpired = true;
 
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name ="users_roles", joinColumns = @JoinColumn (name="user_id"), inverseJoinColumns = @JoinColumn (name="role_id"))
     private Set<Role> roles=new HashSet<>();
 
@@ -48,7 +51,6 @@ public class User {
     }
 
     public Set<Role> getRoles() {
-        if(roles == null) return new HashSet<>();
         return roles;
     }
 

@@ -1,13 +1,12 @@
 INSERT INTO role (Name) VALUES ('ADMIN');
 INSERT INTO role (Name) VALUES ('READ');
 INSERT INTO role (Name) VALUES ('EDIT');
-INSERT INTO role (Name) VALUES ('CREATE');
 
 INSERT INTO USER (password, username, ACCOUNT_NON_EXPIRED , ACCOUNT_NON_LOCKED , CREDENTIALS_NON_EXPIRED , ENABLED ) VALUES ('$2a$10$jVe9PPN9lo./4mUy0kDGguYpLQ86ho/rP2ctWx31XIQmpDssU2UMe', 'sandeep', true, true, true, true);
 INSERT INTO USER (password, username, ACCOUNT_NON_EXPIRED , ACCOUNT_NON_LOCKED , CREDENTIALS_NON_EXPIRED , ENABLED ) VALUES ('$2a$10$nm9W..uFbkD41WZLsQXcleDfeu.e8VudyEJxDE9BHfyVXhXFUtZSS', 'ashnil',  true, true, true, true);
 
 INSERT INTO USERS_ROLES (user_id, role_id) VALUES (1, 1);
-INSERT INTO USERS_ROLES (user_id, role_id) VALUES (2, 4);
+INSERT INTO USERS_ROLES (user_id, role_id) VALUES (2, 3);
 INSERT INTO STUDENT (name, city) VALUES ('sandeep', 'rochester');
 INSERT INTO STUDENT (name, city) VALUES ('ashnil', 'rochester');
 

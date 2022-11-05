@@ -1,12 +1,20 @@
 package edu.rit.assignment4.bean;
 
 public class RegisterUser {
-
+    private Long id;
     private String username;
     private String sname;
     private String password;
     private String city;
     private String role;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;

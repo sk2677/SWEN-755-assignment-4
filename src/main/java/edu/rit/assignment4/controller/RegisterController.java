@@ -8,13 +8,16 @@ import edu.rit.assignment4.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
 @Controller
-public class ApplicationController {
+public class RegisterController {
 
     @Autowired
     StudentService studentService;
@@ -25,16 +28,12 @@ public class ApplicationController {
     @RequestMapping("/")
     public String viewHomePage(Model model) {
         List<Student> listStudent = studentService.listAll();
+        List<User> users = registerService.listAll();
         model.addAttribute("listStudent",listStudent);
+        model.addAttribute("userList", users);
         return "index";
     }
 
-    @RequestMapping("/new")
-    public String newStudentPage(Model model) {
-        Student student=new Student();
-        model.addAttribute(student);
-        return "new_student";
-    }
 
     @RequestMapping("/register")
     public String register(Model model) {
@@ -50,29 +49,30 @@ public class ApplicationController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveStudent(@ModelAttribute("student") Student student ) {
-        studentService.save(student);
+    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
+    public String updateUser(@ModelAttribute("user") RegisterUser user) {
+        registerService.updateUser(user);
         return "redirect:/";
     }
-
 
     @RequestMapping(value = "/saveWithRole", method =RequestMethod.POST)
     public String saveStudentWithRole(@ModelAttribute("student") Student student ) {
         studentService.save(student);
         return "redirect:/";
     }
-    @RequestMapping("/edit/{sid}")
-    public ModelAndView showEditStudentPage(@PathVariable(name="sid") Long sid) {
-        ModelAndView mav=new ModelAndView("edit_student");
-        Student student= studentService.get(sid);
-        mav.addObject("student",student);
+
+
+    @RequestMapping("/editUser/{id}")
+    public ModelAndView showEditRegisterPage(@PathVariable(name="id") Long id) {
+        ModelAndView mav=new ModelAndView("edit_register");
+        User user= registerService.get(id);
+        mav.addObject("user",user);
         return mav;
     }
 
-    @RequestMapping("/delete/{sid}")
-    public String deleteStudentPage(@PathVariable (name="sid") Long sid) {
-        studentService.delete(sid);
+    @RequestMapping("/delete/{id}")
+    public String deleteStudentPage(@PathVariable (name="id") Long id) {
+        registerService.delete(id);
         return "redirect:/";
     }
 }

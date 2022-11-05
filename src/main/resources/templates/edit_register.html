@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Add Student</title>
+</head>
+<body>
+<div align="center">
+    <h1>New Student</h1>
+    <br />
+    <form action="#" th:action="@{/updateUser}" th:object="${user}"
+          method="post">
+
+        <table border="0" cellpadding="10">
+            <tr>
+                <td>User ID:</td>
+                <td><input type="text" th:field="*{id}" readonly="readonly" />
+                </td>
+            </tr>
+            <tr>
+                <td>User Name:</td>
+                <td><input type="text" th:field="*{username}" /></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="role">Choose a role:</label>
+
+                    <select name="role" id="role">
+                        <option value="ADMIN">ADMIN</option>
+                        <option value="READ">READ</option>
+                        <option value="EDIT">EDIT</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><button type="submit">Save</button></td>
+            </tr>
+
+        </table>
+    </form>
+</div>
+
+<script th:inline="javascript">
+var showtext = [[${user}]];
+document.getElementById("role").value =  showtext.roles[0].name;
+console.log(showtext.roles[0])
+</script>
+
+</body>
+</html>
